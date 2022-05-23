@@ -1,18 +1,13 @@
 import React from 'react'
 import FoodDetail from '../FoodDetail'
 import classes from './index.module.css'
-export default function FoodList() {
+export default function FoodList(props) {
   return (
     <>
         <div className={classes.FoodList}>
-            <FoodDetail/>
-            <FoodDetail/>
-            <FoodDetail/>
-            <FoodDetail/>
-            <FoodDetail/>
-            <FoodDetail/>
-            <FoodDetail/>
-            <FoodDetail/>
+            {props.MealsData.map((item)=>
+                <FoodDetail key={item.id} tiltle={item.tiltle} desc={item.desc} price={item.price} img={item.img}/>
+            )}
         </div>
     </>
   )
