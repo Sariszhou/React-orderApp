@@ -1,6 +1,7 @@
 import React from 'react'
 import FoodList from './components/FoodList'
 import {useState} from 'react'
+import CartContext from './store/cart-context'
 
 const FoodData = [
   {
@@ -66,7 +67,7 @@ export default function App() {
     totalPrice:0
   })
   // 向购物车中添加商品
-  const addMealHandler = (meal) =>{
+  const addItem = (meal) =>{
     // 对购物车进行赋值
     const newCart = {...cartData}
     // 向购物车添加商品
@@ -84,9 +85,31 @@ export default function App() {
 
     setCartData(newCart)
   }
+  // 减少商品的数量
+  const removeItem = (meal) =>{
+    // 对购物车进行复制
+    const newCart = {...cartData}
+    // 减少购物车中的商品
+    meal.amount -= 1
+
+    // 检查商品数量是否为0 
+    if(meal.amount === 0){
+      // 从购物车中移除商品
+      newCart.items.splice(newCart.items.indexOf(meal),1)
+
+    }
+
+    newCart.totalAmount -= 1
+    newCart.totalPrice -= meal.price  
+
+    setCartData(newCart)
+  }
   return (
-    <div>
-      <FoodList MealsData={MealsData} onAdd = {addMealHandler}/>
-    </div>
+    <CartContext.Provider value={{...cartData,addItem,removeItem}}>
+      <div>
+        <FoodList MealsData={MealsData}/>
+      </div>
+    </CartContext.Provider>
+      
   )
 }

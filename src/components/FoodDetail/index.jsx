@@ -6,14 +6,14 @@ export default function FoodDetail(props) {
   return (
     <div className={Classes.FoodDetail}>
         <div className={Classes.ImgBox}>
-            <img src={props.img} alt="" />
+            <img src={props.meal.img} alt="" />
         </div>
         <div>
-            <h2 className={Classes.Title}>{props.title}</h2>
-            <p className={Classes.Desc}>{props.desc}</p>
+            <h2 className={Classes.Title}>{props.meal.title}</h2>
+            <p className={Classes.Desc}>{props.meal.desc}</p>
             <div className={Classes.PriceWrapper}>
-                <span className={Classes.Price}>{props.price}</span>
-                <Counter onAdd={props.onAdd} meal={props.meal}/>
+                <span className={Classes.Price}>{props.meal.price}</span>
+                <Counter meal={props.meal}/>
             </div>
         </div>
     </div>
