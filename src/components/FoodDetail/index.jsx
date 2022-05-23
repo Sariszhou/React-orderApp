@@ -13,7 +13,7 @@ export default function FoodDetail(props) {
             <p className={Classes.Desc}>{props.desc}</p>
             <div className={Classes.PriceWrapper}>
                 <span className={Classes.Price}>{props.price}</span>
-                <Counter amount={2}/>
+                <Counter onAdd={props.onAdd} meal={props.meal}/>
             </div>
         </div>
     </div>

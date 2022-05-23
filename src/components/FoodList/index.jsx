@@ -6,7 +6,7 @@ export default function FoodList(props) {
     <>
         <div className={classes.FoodList}>
             {props.MealsData.map((item)=>
-                <FoodDetail key={item.id} tiltle={item.tiltle} desc={item.desc} price={item.price} img={item.img}/>
+                <FoodDetail onAdd={props.onAdd} key={item.id} meal={item} tiltle={item.tiltle} desc={item.desc} price={item.price} img={item.img}/>
             )}
         </div>
     </>

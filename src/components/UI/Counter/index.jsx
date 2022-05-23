@@ -5,18 +5,21 @@ import {faCircleMinus, faCirclePlus} from '@fortawesome/free-solid-svg-icons'
 
 
 export default function Counter(props) {
+    const addButtonHandler = () => {
+        props.onAdd(props.meal)
+    }
     return (
         <div className={classes.Counter}>
             {
-                (props.amount && props.amount > 0) ? (
+                (props.meal.amount && props.meal.amount > 0) ? (
                     <>
                         <button className={classes.Sub}><FontAwesomeIcon  icon={faCircleMinus} /></button>
-                        <span className={classes.Count}>{props.amount}</span>
+                        <span className={classes.Count}>{props.meal.amount}</span>
                     </>
                 ) : null
             }
 
-            <button className={classes.Add}><FontAwesomeIcon  icon={faCirclePlus} /></button>
+            <button onClick={addButtonHandler} className={classes.Add}><FontAwesomeIcon  icon={faCirclePlus} /></button>
         </div>
     )
 }

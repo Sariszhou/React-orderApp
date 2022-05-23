@@ -57,9 +57,36 @@ const FoodData = [
 export default function App() {
   const [MealsData, setMealsData] = useState(FoodData)
   // 创建一个state，用来存储购物车的数据
+  // 1.商品【】 items
+  // 2.商品总数 totalAmount
+  // 3.商品总价 totalPrice
+  const [cartData, setCartData] = useState({
+    items:[],
+    totalAmount:0,
+    totalPrice:0
+  })
+  // 向购物车中添加商品
+  const addMealHandler = (meal) =>{
+    // 对购物车进行赋值
+    const newCart = {...cartData}
+    // 向购物车添加商品
+    if(newCart.items.indexOf(meal) === -1){
+      newCart.items.push(meal)
+       //修改商品数量
+      meal.amount = 1
+    }else{
+      // 增加商品数量
+      meal.amount += 1
+    }
+
+    newCart.totalAmount += 1
+    newCart.totalPrice += meal.price  
+
+    setCartData(newCart)
+  }
   return (
     <div>
-      <FoodList MealsData={MealsData}/>
+      <FoodList MealsData={MealsData} onAdd = {addMealHandler}/>
     </div>
   )
 }
