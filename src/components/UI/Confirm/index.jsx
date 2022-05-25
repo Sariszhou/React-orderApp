@@ -4,7 +4,7 @@ import classes from './index.module.css'
 
 export default function BackDrop(props) {
   return (
-    <Backdrop className={classes.ConfirmOuter}>
+    <Backdrop onClick={props.onCancel} className={classes.ConfirmOuter}>
         <div className={classes.Confirm}>
             <p className={classes.ConfirmText}>{props.confirmText}</p>
             <div>
