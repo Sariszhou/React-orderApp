@@ -1,6 +1,7 @@
 .FoodList{
     position: absolute;
-    top: 0;
+    top: 100rem;
     bottom: 0;
     overflow: auto;
+    padding-bottom: 120rem;
 }

@@ -8,9 +8,9 @@ export default function FoodDetail(props) {
         <div className={Classes.ImgBox}>
             <img src={props.meal.img} alt="" />
         </div>
-        <div>
+        <div className={Classes.DescBox}>
             <h2 className={Classes.Title}>{props.meal.title}</h2>
-            <p className={Classes.Desc}>{props.meal.desc}</p>
+            {props.noDesc?null:<p className={Classes.Desc}>{props.meal.desc}</p>}
             <div className={Classes.PriceWrapper}>
                 <span className={Classes.Price}>{props.meal.price}</span>
                 <Counter meal={props.meal}/>

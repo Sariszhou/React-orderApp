@@ -2,6 +2,10 @@ import React from 'react'
 import FoodList from './components/FoodList'
 import {useState} from 'react'
 import CartContext from './store/cart-context'
+import Search from './components/Search'
+import ShopCart from './components/ShopCart'
+
+
 
 const FoodData = [
   {
@@ -104,11 +108,34 @@ export default function App() {
 
     setCartData(newCart)
   }
+  // 清空购物车
+  const clearCart = ()=>{
+
+    const newCart = {...cartData}
+    // 将购物车中商品的数量清零
+    newCart.items.forEach(item => delete item.amount)
+    newCart.items=[]
+    newCart.totalAmount=0
+    newCart.totalPrice=0
+
+    setCartData(newCart)
+  }
+
+  // 创建一个过滤meals的函数
+  const filterHandler = (keyword)=>{
+    const newMealsData = FoodData.filter(item => item.title.indexOf(keyword) !== -1)
+    setMealsData(newMealsData)
+    
+  }
   return (
-    <CartContext.Provider value={{...cartData,addItem,removeItem}}>
+    <CartContext.Provider value={{...cartData,addItem,removeItem,clearCart}}>
       <div>
+        <Search onInputChangeHandler = {filterHandler} />
         <FoodList MealsData={MealsData}/>
       </div>
+      <ShopCart></ShopCart>
+      {/* <Backdrop></Backdrop> */}
+      {/* <Confirm></Confirm> */}
     </CartContext.Provider>
       
   )

@@ -7,7 +7,8 @@
 }
 
 .ImgBox{
-    width: 290rem;
+    width: 240rem;
+    margin-right: 10rem;
 }
 
 img{
@@ -35,15 +36,20 @@ img{
 
 .Price{
     font-weight: bold;
-    font-size: 16px;
+    font-size: 32rem;
 }
 
 .Price::before{
     content:'￥';
-    font-size: 14px;
+    font-size: 28rem;
 }
 
 .Number{
-    font-size: 12px;
+    font-size: 24rem;
 
+}
+
+
+.DescBox{
+    flex: auto;
 }
