@@ -1,14 +1,25 @@
 import React from 'react'
+import { useState,useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import classes from './index.module.css'
 
 
 export default function Search(props) {
+    const [keyword, setKeyword] = useState('');
+    const onFilter = props.onInputChangeHandler
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            onFilter(keyword)
+        }, 1000);
+    
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [keyword]);
     
     const inputChangeHandler = e=>{
-        const keyword = e.target.value.trim()
-        props.onInputChangeHandler(keyword)
+        setKeyword(e.target.value.trim());
     }
     return (
         <div className={classes.FilterMeals}>

@@ -1,6 +1,6 @@
 import React from 'react'
 import FoodList from './components/FoodList'
-import {useState} from 'react'
+import {useState, useReducer} from 'react'
 import CartContext from './store/cart-context'
 import Search from './components/Search'
 import ShopCart from './components/ShopCart'
@@ -58,77 +58,112 @@ const FoodData = [
     img:'/imgs/meals/7.png'
   },
 ]
-
+const cartReducer = (state, action) => {
+  const newCart = {...state};
+  switch (action.type){
+      case 'ADD_ITEM':
+          if (newCart.items.indexOf(action.meal) === -1) {
+              newCart.items.push(action.meal);
+              action.meal.amount = 1;
+          } else {
+              action.meal.amount += 1;
+          }
+          newCart.totalAmount += 1;
+          newCart.totalPrice += action.meal.price;
+          return newCart;
+      case 'REMOVE_ITEM':
+          action.meal.amount -= 1;
+          if (action.meal.amount === 0) {
+              newCart.items.splice(newCart.items.indexOf(action.meal), 1);
+          }
+          newCart.totalAmount -= 1;
+          newCart.totalPrice -= action.meal.price;
+          return newCart;
+      case 'CLEAR_CART':
+          newCart.items.forEach(item => delete item.amount);
+          newCart.items = [];
+          newCart.totalAmount = 0;
+          newCart.totalPrice = 0;
+          return newCart;
+      default:
+          return state;
+  }
+};
 export default function App() {
   const [MealsData, setMealsData] = useState(FoodData)
-  // 创建一个state，用来存储购物车的数据
-  // 1.商品【】 items
-  // 2.商品总数 totalAmount
-  // 3.商品总价 totalPrice
-  const [cartData, setCartData] = useState({
-    items:[],
-    totalAmount:0,
-    totalPrice:0
-  })
-  // 向购物车中添加商品
-  const addItem = (meal) =>{
-    // 对购物车进行赋值
-    const newCart = {...cartData}
-    // 向购物车添加商品
-    if(newCart.items.indexOf(meal) === -1){
-      newCart.items.push(meal)
-       //修改商品数量
-      meal.amount = 1
-    }else{
-      // 增加商品数量
-      meal.amount += 1
-    }
+  // // 创建一个state，用来存储购物车的数据
+  // // 1.商品【】 items
+  // // 2.商品总数 totalAmount
+  // // 3.商品总价 totalPrice
+  // const [cartData, setCartData] = useState({
+  //   items:[],
+  //   totalAmount:0,
+  //   totalPrice:0
+  // })
+  // // 向购物车中添加商品
+  // const addItem = (meal) =>{
+  //   // 对购物车进行赋值
+  //   const newCart = {...cartData}
+  //   // 向购物车添加商品
+  //   if(newCart.items.indexOf(meal) === -1){
+  //     newCart.items.push(meal)
+  //      //修改商品数量
+  //     meal.amount = 1
+  //   }else{
+  //     // 增加商品数量
+  //     meal.amount += 1
+  //   }
 
-    newCart.totalAmount += 1
-    newCart.totalPrice += meal.price  
+  //   newCart.totalAmount += 1
+  //   newCart.totalPrice += meal.price  
 
-    setCartData(newCart)
-  }
-  // 减少商品的数量
-  const removeItem = (meal) =>{
-    // 对购物车进行复制
-    const newCart = {...cartData}
-    // 减少购物车中的商品
-    meal.amount -= 1
+  //   setCartData(newCart)
+  // }
+  // // 减少商品的数量
+  // const removeItem = (meal) =>{
+  //   // 对购物车进行复制
+  //   const newCart = {...cartData}
+  //   // 减少购物车中的商品
+  //   meal.amount -= 1
 
-    // 检查商品数量是否为0 
-    if(meal.amount === 0){
-      // 从购物车中移除商品
-      newCart.items.splice(newCart.items.indexOf(meal),1)
+  //   // 检查商品数量是否为0 
+  //   if(meal.amount === 0){
+  //     // 从购物车中移除商品
+  //     newCart.items.splice(newCart.items.indexOf(meal),1)
+  //   }
 
-    }
+  //   newCart.totalAmount -= 1
+  //   newCart.totalPrice -= meal.price  
 
-    newCart.totalAmount -= 1
-    newCart.totalPrice -= meal.price  
+  //   setCartData(newCart)
+  // }
+  // // 清空购物车
+  // const clearCart = ()=>{
 
-    setCartData(newCart)
-  }
-  // 清空购物车
-  const clearCart = ()=>{
+  //   const newCart = {...cartData}
+  //   // 将购物车中商品的数量清零
+  //   newCart.items.forEach(item => delete item.amount)
+  //   newCart.items=[]
+  //   newCart.totalAmount=0
+  //   newCart.totalPrice=0
 
-    const newCart = {...cartData}
-    // 将购物车中商品的数量清零
-    newCart.items.forEach(item => delete item.amount)
-    newCart.items=[]
-    newCart.totalAmount=0
-    newCart.totalPrice=0
-
-    setCartData(newCart)
-  }
+  //   setCartData(newCart)
+  // }
 
   // 创建一个过滤meals的函数
+  const [cartData, cartDispatch] = useReducer(cartReducer, {
+    items: [],
+    totalAmount: 0,
+    totalPrice: 0
+});
+
   const filterHandler = (keyword)=>{
     const newMealsData = FoodData.filter(item => item.title.indexOf(keyword) !== -1)
     setMealsData(newMealsData)
     
   }
   return (
-    <CartContext.Provider value={{...cartData,addItem,removeItem,clearCart}}>
+    <CartContext.Provider value={{...cartData,cartDispatch}}>
       <div>
         <Search onInputChangeHandler = {filterHandler} />
         <FoodList MealsData={MealsData}/>

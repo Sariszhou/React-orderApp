@@ -26,6 +26,12 @@ export default function ShopCart() {
     const hideCheckoutHandler = ()=>{
         setShowCheckout(false)
     }
+    // 在组件每次重新渲染的时候，检查一下商品的总数量，如果数量为0 则修改showDetails为false
+    // 组件每次重新渲染 组件的函数体就会执行
+    // 以下代码回报错
+    // if(ctx.totalAmount === 0){
+    //     setShowDetails(false)
+    // }
     return (
         <div className={classes.Cart} onClick={toggleDetailsHandler}>
             {showCheckout && <Checkout onHide={hideCheckoutHandler} />}

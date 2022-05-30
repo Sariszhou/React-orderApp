@@ -22,7 +22,7 @@ export default function CartDetails() {
     }
     const okHandler = ()=>{
         // setShowConfirm(false)
-        ctx.clearCart()
+        ctx.cartDispatch({type:'CLEAR_CART'}); // 清空购物车
     }
 
   return (

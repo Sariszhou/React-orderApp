@@ -7,16 +7,18 @@ import CartContext from '../../../store/cart-context'
 
 export default function Counter(props) {
 
-    const cartCtx = useContext(CartContext)
+    const ctx = useContext(CartContext)
 
 
     const addButtonHandler = () => {
         // props.onAdd(props.meal)
-        cartCtx.addItem(props.meal)
+        // ctx.addItem(props.meal)
+        ctx.cartDispatch({type:'ADD_ITEM', meal:props.meal}); // 添加食物
     }
     const subButtonHandler = () => {
         // props.onMinus(props.meal)
-        cartCtx.removeItem(props.meal)
+        // ctx.removeItem(props.meal)
+        ctx.cartDispatch({type:'REMOVE_ITEM', meal:props.meal}); // 删除食物
     }
     return (
         <div className={classes.Counter}>
